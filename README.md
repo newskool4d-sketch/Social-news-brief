@@ -56,6 +56,15 @@ npm run dev      # http://localhost:3000
 npm run build    # 프로덕션 빌드 (타입 체크 포함)
 ```
 
+## 발행 전 검증 (필수)
+
+```bash
+node scripts/validate-issue.mjs content/data/YYYY-MM-DD.json
+```
+
+스키마·성취기준 코드 실존 여부·기사 수 상한(5건)·placeholder URL 등을 검사합니다.
+빌더는 무효 코드 기사를 조용히 지면에서 제외하므로, push 전 반드시 통과시켜야 합니다.
+
 ## 배포
 
 GitHub에 push하면 Vercel이 자동으로 빌드·배포합니다(최초 1회 Vercel 대시보드에서 "Import Git Repository"로 이 리포를 연결).
