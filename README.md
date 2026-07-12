@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 사회 브리핑 (Social News Brief)
 
-## Getting Started
+2022 개정 교육과정 성취기준(통합사회1·2, 일반사회 영역 일반선택·진로선택·융합선택 7과목)으로
+오늘의 뉴스를 읽는 종이 신문 형식 아카이브. Next.js(App Router) + Vercel.
 
-First, run the development server:
+## 구조
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+content/
+  curriculum_ref.json   # 성취기준 정본 — 9과목 122건, 교육부 고시 제2022-33호 [별책 7] 대조 완료
+  data/
+    YYYY-MM-DD.json      # 호(issue)별 기사 데이터. 하루 1파일.
+lib/
+  types.ts               # 데이터 타입
+  curriculum.ts           # curriculum_ref.json 로드 + 성취기준 코드 플랫화
+  data.ts                 # content/data/*.json 로드
+  faces.ts                # 기사의 대표 성취기준으로 면(단원) 자동 배치
+  format.ts, subject-labels.ts
+components/               # Masthead, IssueNav, FaceSection, StoryCard, StandardBadges, BodyToggle, Colophon
+app/
+  page.tsx                # 최신 호로 리다이렉트
+  issues/[date]/page.tsx  # 호별 페이지 (generateStaticParams로 전 호 정적 생성)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 데이터 스키마 (`content/data/YYYY-MM-DD.json`)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```jsonc
+{
+  "date": "2026-07-12",
+  "articles": [
+    {
+      "id": "고유-id",
+      "scope": "국내" | "해외",
+      "title": "헤드라인",
+      "subhead": "부제(선택)",
+      "lede": "리드 문단",
+      "body": [{ "h": "소제목", "p": "본문" }],   // 선택 — 있으면 "본문 자세히" 토글 노출
+      "think": "생각해 보기 문항",
+      "standards": [{ "code": "10통사1-02-01", "gloss": "짧은 요지" }],
+      "tags": ["해시태그"],
+      "source": { "name": "매체명", "url": "https://..." }
+    }
+  ]
+}
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **면(단원) 배치**: `standards[0]`(대표 성취기준)의 과목으로 자동 결정됩니다. 별도 분류 필드가 없습니다.
+- **결호**: 그날 성취기준에 해당하는 기사가 없으면 파일을 만들지 않으면 됩니다(하루 0~5건 권장 — 생각을 유발하는 기사만 선별).
+- **성취기준 코드**: `content/curriculum_ref.json`에 있는 코드만 유효합니다. 없는 코드를 쓴 기사는 지면에서 자동 제외됩니다(방어적 처리).
 
-## Learn More
+## 개발
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # 프로덕션 빌드 (타입 체크 포함)
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 배포
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+GitHub에 push하면 Vercel이 자동으로 빌드·배포합니다(최초 1회 Vercel 대시보드에서 "Import Git Repository"로 이 리포를 연결).
 
-## Deploy on Vercel
+## 시드 데이터 안내
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`content/data/2026-07-12.json`은 **디자인·빌드 검증용 예시 데이터**입니다. `source.url`이 전부
+`example.com` 플레이스홀더이며 실제 보도가 아닙니다. 실 데이터 파이프라인(수집 스킬) 연결 시
+이 파일을 교체하거나 삭제하세요.
