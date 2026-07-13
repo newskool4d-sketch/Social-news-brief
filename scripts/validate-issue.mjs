@@ -89,6 +89,12 @@ for (const [i, a] of (issue.articles ?? []).entries()) {
   if (a.scope !== "국내" && a.scope !== "해외") {
     errors.push(`${tag}: scope는 "국내" 또는 "해외"여야 함 (현재: ${a.scope})`);
   }
+
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(a.reported ?? "")) {
+    errors.push(`${tag}: reported(원문 보도일)가 YYYY-MM-DD 형식이어야 함 (현재: ${a.reported})`);
+  } else if (issue.date && a.reported > issue.date) {
+    errors.push(`${tag}: reported(${a.reported})가 발행일(${issue.date})보다 미래 — 보도일은 발행일 이전이어야 함`);
+  }
   if (!a.title?.trim()) errors.push(`${tag}: title 누락`);
   if (!a.lede?.trim()) errors.push(`${tag}: lede 누락`);
   if (!a.think?.trim()) warnings.push(`${tag}: think(생각해 보기) 없음 — 선별 취지상 반드시 재고`);

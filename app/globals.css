@@ -244,6 +244,14 @@ h1.mast-title {
   color: var(--ink-soft);
 }
 
+.report-date {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
 .story h2 {
   margin: 0 0 4px;
   font-size: clamp(23px, 3vw, 30px);

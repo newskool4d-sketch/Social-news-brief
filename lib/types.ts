@@ -11,6 +11,7 @@ export type ArticleBody = {
 export type Article = {
   id: string;
   scope: "국내" | "해외";
+  reported: string; // 원문 보도일 YYYY-MM-DD
   title: string;
   subhead?: string;
   lede: string;

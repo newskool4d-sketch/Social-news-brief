@@ -1,4 +1,5 @@
 import type { ArticleView } from "@/lib/types";
+import { formatDateShort } from "@/lib/format";
 import { StandardBadges } from "./StandardBadges";
 import { BodyToggle } from "./BodyToggle";
 
@@ -7,6 +8,11 @@ export function StoryCard({ article, lead = false }: { article: ArticleView; lea
     <article className={`story${lead ? " lead" : ""}`}>
       <div className="story-meta">
         <span className={`scope${article.scope === "국내" ? " dom" : ""}`}>{article.scope}</span>
+        {article.reported ? (
+          <time className="report-date" dateTime={article.reported}>
+            {formatDateShort(article.reported)} 보도
+          </time>
+        ) : null}
       </div>
       <h2>{article.title}</h2>
       {article.subhead ? <p className="subhead">{article.subhead}</p> : null}
