@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import type { StandardRef } from "@/lib/types";
 import { useStandardDetail } from "./StandardDetailsProvider";
 
@@ -23,6 +24,11 @@ function Detail({ code }: { code: string }) {
       {detail.explain ? (
         <div style={{ marginTop: 11, color: "var(--muted)" }}>{detail.explain}</div>
       ) : null}
+      <div style={{ marginTop: 11 }}>
+        <Link href={`/standards/${encodeURIComponent(code)}`} className="src-link" style={{ marginLeft: 0 }}>
+          이 성취기준의 기사 모아보기 →
+        </Link>
+      </div>
     </div>
   );
 }

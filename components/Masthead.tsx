@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PUBLISH_DAYS_LABEL } from "@/lib/schedule";
 
 export function Masthead({ issueNo, dateLabel }: { issueNo: number; dateLabel: string }) {
   return (
@@ -7,7 +8,7 @@ export function Masthead({ issueNo, dateLabel }: { issueNo: number; dateLabel: s
         <div className="mast-side left">
           제{issueNo}호
           <br />
-          성취기준 연계 시사 아카이브
+          {PUBLISH_DAYS_LABEL}
         </div>
         <h1 className="mast-title">
           <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>

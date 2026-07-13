@@ -459,6 +459,65 @@ h1.mast-title {
   color: var(--muted);
 }
 
+/* ── 인쇄(A4 교실 게시용) ── */
+@media print {
+  :root {
+    --desk: #ffffff;
+    --paper: #ffffff;
+    --ink: #000000;
+    --ink-soft: #1a1a1a;
+    --muted: #444444;
+    --hairline: #999999;
+    --rule: #000000;
+    --stamp: #000000;
+    --stamp-bg: transparent;
+    --think-bg: #f2f2f2;
+  }
+
+  body {
+    background: #ffffff;
+  }
+
+  .sheet {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .issue-nav,
+  .std-detail,
+  .deep-toggle {
+    display: none !important;
+  }
+
+  .story,
+  .face-head,
+  .think {
+    break-inside: avoid;
+  }
+
+  .story h2 {
+    font-size: 20px;
+  }
+
+  .story.lead h2 {
+    font-size: 24px;
+  }
+
+  .lede {
+    font-size: 12.5px;
+    line-height: 1.7;
+  }
+
+  .src-link::after {
+    content: " (" attr(href) ")";
+    font-weight: 400;
+    font-size: 10px;
+    word-break: break-all;
+  }
+}
+
 @media (max-width: 720px) {
   .sheet {
     padding: 26px 20px 40px;

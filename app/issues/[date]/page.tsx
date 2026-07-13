@@ -21,7 +21,16 @@ export async function generateMetadata({
   params: Promise<{ date: string }>;
 }): Promise<Metadata> {
   const { date } = await params;
-  return { title: `사회 브리핑 — ${formatDateKorean(date)}` };
+  const issue = await loadIssue(date);
+  const title = `사회 브리핑 — ${formatDateKorean(date)}`;
+  const description = issue
+    ? issue.articles.map((a) => a.title).join(" / ").slice(0, 160)
+    : "통합사회·일반사회 성취기준으로 읽는 뉴스";
+  return {
+    title,
+    description,
+    openGraph: { title, description, type: "article", locale: "ko_KR", siteName: "사회 브리핑" },
+  };
 }
 
 export default async function IssuePage({ params }: { params: Promise<{ date: string }> }) {
@@ -55,6 +64,7 @@ export default async function IssuePage({ params }: { params: Promise<{ date: st
       <div className="sheet">
         <Masthead issueNo={issueNo} dateLabel={formatDateKorean(date)} />
         <IssueNav
+          isoDate={date}
           dateLabel={formatDateKorean(date)}
           prevDate={prevDate}
           nextDate={nextDate}

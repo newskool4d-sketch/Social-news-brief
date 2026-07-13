@@ -13,8 +13,9 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
-const MAX_ARTICLES = 5;
+const MAX_ARTICLES = 6;
 const MAX_STANDARDS = 3;
+const MAX_PER_FACE = 2; // 같은 과목 면 독식 방지(경고)
 
 const errors = [];
 const warnings = [];
@@ -35,8 +36,28 @@ try {
 
 const ref = JSON.parse(readFileSync(path.join(ROOT, "content", "curriculum_ref.json"), "utf-8"));
 const validCodes = new Set();
-for (const subject of Object.values(ref.subjects)) {
-  for (const s of subject.standards) validCodes.add(s.code);
+const codeToSubject = new Map();
+for (const [subjectKey, subject] of Object.entries(ref.subjects)) {
+  for (const s of subject.standards) {
+    validCodes.add(s.code);
+    codeToSubject.set(s.code, subjectKey);
+  }
+}
+
+const whitelist = JSON.parse(readFileSync(path.join(ROOT, "content", "source_whitelist.json"), "utf-8"));
+const allowedDomains = whitelist.allowed ?? [];
+const blockedDomains = whitelist.blocked ?? {};
+
+function hostnameOf(url) {
+  try {
+    return new URL(url).hostname;
+  } catch {
+    return null;
+  }
+}
+
+function domainMatches(hostname, domain) {
+  return hostname === domain || hostname.endsWith("." + domain);
 }
 
 // ── 호 수준 검사 ──
@@ -92,12 +113,42 @@ for (const [i, a] of (issue.articles ?? []).entries()) {
     errors.push(`${tag}: source.name 또는 source.url(http/https) 누락`);
   } else if (/example\.com/.test(a.source.url)) {
     errors.push(`${tag}: source.url이 example.com 플레이스홀더 — 실제 기사 URL로 교체할 것`);
+  } else {
+    const host = hostnameOf(a.source.url);
+    if (!host) {
+      errors.push(`${tag}: source.url 파싱 불가 (${a.source.url})`);
+    } else {
+      const blockedHit = Object.keys(blockedDomains).find((d) => domainMatches(host, d));
+      if (blockedHit) {
+        errors.push(`${tag}: 차단 도메인 ${host} — ${blockedDomains[blockedHit]}`);
+      } else if (!allowedDomains.some((d) => domainMatches(host, d))) {
+        errors.push(
+          `${tag}: 화이트리스트 외 매체 ${host} — 목록 매체의 기사로 교체하거나 content/source_whitelist.json에 매체를 추가(사용자 승인)할 것`
+        );
+      }
+    }
   }
 
   if (a.body !== undefined) {
     if (!Array.isArray(a.body) || a.body.some((sec) => !sec.h?.trim() || !sec.p?.trim())) {
       errors.push(`${tag}: body는 [{h, p}] 배열이어야 하며 빈 항목 불가`);
     }
+  }
+}
+
+// ── 균형 검사 (경고 — 결호 원칙 유지를 위해 차단하지 않음) ──
+const articles = issue.articles ?? [];
+if (articles.length > 0 && !articles.some((a) => a.scope === "해외")) {
+  warnings.push("해외 기사 0건 — 국내·해외 균형 원칙상 해외 기사 1건 이상 권장");
+}
+const faceCounts = new Map();
+for (const a of articles) {
+  const subject = codeToSubject.get(a.standards?.[0]?.code);
+  if (subject) faceCounts.set(subject, (faceCounts.get(subject) ?? 0) + 1);
+}
+for (const [subject, n] of faceCounts) {
+  if (n > MAX_PER_FACE) {
+    warnings.push(`'${subject}' 면에 기사 ${n}건 — 한 면 최대 ${MAX_PER_FACE}건 권장(면 독식 방지)`);
   }
 }
 

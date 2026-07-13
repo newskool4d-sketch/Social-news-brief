@@ -1,8 +1,10 @@
 import { Fragment } from "react";
 import Link from "next/link";
 import { formatDateShort } from "@/lib/format";
+import { nextPublishLabel } from "@/lib/schedule";
 
 export function IssueNav({
+  isoDate,
   dateLabel,
   prevDate,
   nextDate,
@@ -10,6 +12,7 @@ export function IssueNav({
   articleCount,
   standardCodes,
 }: {
+  isoDate: string;
   dateLabel: string;
   prevDate: string | null;
   nextDate: string | null;
@@ -35,7 +38,8 @@ export function IssueNav({
             다음 호 ▶
           </Link>
         ) : (
-          <span className="nav-btn disabled">다음 호 ▶</span>
+          // 최신 호: 다음 발행 예정일 안내 (평일 기준)
+          <span className="nav-btn disabled">다음 호 {nextPublishLabel(isoDate)} 예정</span>
         )}
       </nav>
       {standardCodes.length > 0 ? (

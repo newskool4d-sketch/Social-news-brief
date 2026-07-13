@@ -1,0 +1,40 @@
+{
+  "_readme": "출처 매체 화이트리스트. 도메인은 서브도메인 포함 매칭(news.un.org는 un.org로 허용). 매체 추가·제외는 이 파일만 수정하면 된다(코드 수정 불필요).",
+  "allowed": [
+    "yna.co.kr",
+    "newsis.com",
+    "news1.kr",
+    "chosun.com",
+    "joongang.co.kr",
+    "donga.com",
+    "hani.co.kr",
+    "khan.co.kr",
+    "hankookilbo.com",
+    "kbs.co.kr",
+    "imbc.com",
+    "sbs.co.kr",
+    "ytn.co.kr",
+    "mk.co.kr",
+    "hankyung.com",
+    "sedaily.com",
+    "ajunews.com",
+    "fnnews.com",
+    "go.kr",
+    "korea.kr",
+    "un.org",
+    "oecd.org",
+    "reuters.com",
+    "apnews.com",
+    "bbc.com",
+    "bbc.co.uk",
+    "theguardian.com",
+    "nytimes.com"
+  ],
+  "blocked": {
+    "v.daum.net": "다음 포털 리다이렉트 — 원매체 URL로 교체",
+    "daum.net": "다음 포털 — 원매체 URL로 교체",
+    "n.news.naver.com": "네이버 포털 — 원매체 URL로 교체",
+    "news.naver.com": "네이버 포털 — 원매체 URL로 교체",
+    "news.nate.com": "네이트 포털 — 원매체 URL로 교체"
+  }
+}
