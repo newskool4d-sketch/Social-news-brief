@@ -13,7 +13,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
-const MAX_ARTICLES = 6;
+const MAX_ARTICLES = 8; // 주간 발행 — 과목별 커버리지 확보용 상한
 const MAX_STANDARDS = 3;
 const MAX_PER_FACE = 2; // 같은 과목 면 독식 방지(경고)
 

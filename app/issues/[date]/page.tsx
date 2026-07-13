@@ -64,7 +64,6 @@ export default async function IssuePage({ params }: { params: Promise<{ date: st
       <div className="sheet">
         <Masthead issueNo={issueNo} dateLabel={formatDateKorean(date)} />
         <IssueNav
-          isoDate={date}
           dateLabel={formatDateKorean(date)}
           prevDate={prevDate}
           nextDate={nextDate}
