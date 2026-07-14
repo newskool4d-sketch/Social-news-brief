@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { loadFlatStandards } from "@/lib/curriculum";
 import { findArticlesByStandard } from "@/lib/standard-archive";
-import { formatDateKorean, formatDateShort } from "@/lib/format";
+import { formatDateKorean, formatDateFull } from "@/lib/format";
 import { faceLabel } from "@/lib/subject-labels";
 
 export async function generateStaticParams() {
@@ -71,7 +71,7 @@ export default async function StandardPage({ params }: { params: Promise<{ code:
                 <span className={`scope${article.scope === "국내" ? " dom" : ""}`}>{article.scope}</span>
                 {article.reported ? (
                   <time className="report-date" dateTime={article.reported}>
-                    {formatDateShort(article.reported)} 보도
+                    {formatDateFull(article.reported)} 보도
                   </time>
                 ) : null}
                 <Link href={`/issues/${issueDate}`} style={{ color: "var(--muted)" }}>

@@ -1,5 +1,5 @@
 import type { ArticleView } from "@/lib/types";
-import { formatDateShort } from "@/lib/format";
+import { formatDateFull } from "@/lib/format";
 import { StandardBadges } from "./StandardBadges";
 import { BodyToggle } from "./BodyToggle";
 
@@ -10,7 +10,7 @@ export function StoryCard({ article, lead = false }: { article: ArticleView; lea
         <span className={`scope${article.scope === "국내" ? " dom" : ""}`}>{article.scope}</span>
         {article.reported ? (
           <time className="report-date" dateTime={article.reported}>
-            {formatDateShort(article.reported)} 보도
+            {formatDateFull(article.reported)} 보도
           </time>
         ) : null}
       </div>
