@@ -33,10 +33,10 @@ export function StoryCard({ article, lead = false }: { article: ArticleView; lea
             </span>
           ))}
         </div>
-        <a className="src-link" href={article.source.url} target="_blank" rel="noopener noreferrer">
-          {article.source.name} →
-        </a>
       </div>
+      <a className="src-cta" href={article.source.url} target="_blank" rel="noopener noreferrer">
+        {article.source.name}에서 기사 본문을 확인할 수 있습니다 →
+      </a>
     </article>
   );
 }
