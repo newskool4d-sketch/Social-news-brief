@@ -1,4 +1,4 @@
-# 사회 브리핑 (Social News Brief)
+# 학생을 위한 사회 뉴스 브리핑 (Social News Brief)
 
 2022 개정 교육과정 성취기준(통합사회1·2, 일반사회 영역 일반선택·진로선택·융합선택 7과목)으로
 오늘의 뉴스를 읽는 종이 신문 형식 아카이브. Next.js(App Router) + Vercel.

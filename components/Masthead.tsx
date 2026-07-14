@@ -12,7 +12,7 @@ export function Masthead({ issueNo, dateLabel }: { issueNo: number; dateLabel: s
         </div>
         <h1 className="mast-title">
           <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>
-            사회 브리핑
+            학생을 위한 사회 뉴스 브리핑
           </Link>
         </h1>
         <div className="mast-side right">

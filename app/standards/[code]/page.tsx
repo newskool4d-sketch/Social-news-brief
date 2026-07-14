@@ -17,7 +17,7 @@ export async function generateMetadata({
   params: Promise<{ code: string }>;
 }): Promise<Metadata> {
   const code = decodeURIComponent((await params).code);
-  return { title: `${code} 관련 기사 — 사회 브리핑` };
+  return { title: `${code} 관련 기사 — 학생을 위한 사회 뉴스 브리핑` };
 }
 
 export default async function StandardPage({ params }: { params: Promise<{ code: string }> }) {
@@ -35,7 +35,7 @@ export default async function StandardPage({ params }: { params: Promise<{ code:
           <div className="mast-side left">성취기준 모아보기</div>
           <h1 className="mast-title" style={{ fontSize: "clamp(28px, 4.5vw, 40px)" }}>
             <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>
-              사회 브리핑
+              학생을 위한 사회 뉴스 브리핑
             </Link>
           </h1>
           <div className="mast-side right">

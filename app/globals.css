@@ -100,12 +100,12 @@ a:focus-visible {
 
 h1.mast-title {
   margin: 0;
-  font-size: clamp(40px, 7vw, 62px);
+  font-size: clamp(28px, 5vw, 46px);
   font-weight: 900;
-  letter-spacing: 0.12em;
-  text-indent: 0.12em;
-  line-height: 1.15;
-  white-space: nowrap;
+  letter-spacing: 0.06em;
+  text-indent: 0.06em;
+  line-height: 1.25;
+  text-wrap: balance;
 }
 
 .mast-sub {

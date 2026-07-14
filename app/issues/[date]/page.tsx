@@ -22,14 +22,14 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { date } = await params;
   const issue = await loadIssue(date);
-  const title = `사회 브리핑 — ${formatDateKorean(date)}`;
+  const title = `학생을 위한 사회 뉴스 브리핑 — ${formatDateKorean(date)}`;
   const description = issue
     ? issue.articles.map((a) => a.title).join(" / ").slice(0, 160)
     : "통합사회·일반사회 성취기준으로 읽는 뉴스";
   return {
     title,
     description,
-    openGraph: { title, description, type: "article", locale: "ko_KR", siteName: "사회 브리핑" },
+    openGraph: { title, description, type: "article", locale: "ko_KR", siteName: "학생을 위한 사회 뉴스 브리핑" },
   };
 }
 
