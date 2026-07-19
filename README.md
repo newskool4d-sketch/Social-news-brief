@@ -59,13 +59,24 @@ npm run dev      # http://localhost:3000
 npm run build    # 프로덕션 빌드 (타입 체크 포함)
 ```
 
+## 기사 수집 (RSS 1차 + WebSearch 보강)
+
+```bash
+python scripts/collect_candidates.py    # since=마지막 발행 다음날, until=오늘 (기본값)
+```
+
+Google News RSS를 `after:/before:` 날짜 연산자로 조회해 `content/source_whitelist.json` 도메인만
+남기고 원문 URL을 복원한 뒤 `content/.collect/candidates-YYYY-MM-DD.json`(git 미추적 임시 캐시)에
+저장합니다. 사회브리핑 스킬이 이 후보 롱리스트 위에서 선별·태깅·검증을 수행합니다. 세부는
+`~/.claude/skills/사회브리핑/SKILL.md`의 "검색 방식" 참조.
+
 ## 발행 전 검증 (필수)
 
 ```bash
 node scripts/validate-issue.mjs content/data/YYYY-MM-DD.json
 ```
 
-스키마·성취기준 코드 실존 여부·기사 수 상한(6건)·원문 보도일·출처 화이트리스트·placeholder URL 등을 검사합니다.
+스키마·성취기준 코드 실존 여부·기사 수 상한(8건)·원문 보도일·출처 화이트리스트·placeholder URL 등을 검사합니다.
 빌더는 무효 코드 기사를 조용히 지면에서 제외하므로, push 전 반드시 통과시켜야 합니다.
 
 ## 배포
