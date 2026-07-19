@@ -18,6 +18,9 @@ export function StoryCard({ article, lead = false }: { article: ArticleView; lea
       {article.subhead ? <p className="subhead">{article.subhead}</p> : null}
       <p className={`lede${lead ? " two-col" : ""}`}>{article.lede}</p>
       {article.body && article.body.length > 0 ? <BodyToggle sections={article.body} /> : null}
+      <a className="src-cta" href={article.source.url} target="_blank" rel="noopener noreferrer">
+        {article.source.name}에서 기사 본문을 확인할 수 있습니다 →
+      </a>
       {article.think ? (
         <aside className="think">
           <div className="think-label">생각해 보기</div>
@@ -34,9 +37,6 @@ export function StoryCard({ article, lead = false }: { article: ArticleView; lea
           ))}
         </div>
       </div>
-      <a className="src-cta" href={article.source.url} target="_blank" rel="noopener noreferrer">
-        {article.source.name}에서 기사 본문을 확인할 수 있습니다 →
-      </a>
     </article>
   );
 }
