@@ -1,5 +1,6 @@
+import type { CSSProperties } from "react";
 import type { ArticleView, Face } from "@/lib/types";
-import { faceLabel } from "@/lib/subject-labels";
+import { faceLabel, faceAccent } from "@/lib/subject-labels";
 import { StoryCard } from "./StoryCard";
 
 function chunkPairs(articles: ArticleView[]): ArticleView[][] {
@@ -14,9 +15,11 @@ export function FaceSection({ face, isFirstFace }: { face: Face; isFirstFace: bo
   const lead = isFirstFace ? face.articles[0] : null;
   const rest = isFirstFace ? face.articles.slice(1) : face.articles;
 
+  const accentStyle = { "--face-accent": faceAccent(face.subjectKey) } as CSSProperties;
+
   return (
     <section className="face">
-      <div className="face-head">
+      <div className="face-head" style={accentStyle}>
         <span className="face-label">{faceLabel(face.subjectKey)}</span>
         <span className="face-unit">
           {face.subjectKey} · {face.unitNames.join(" · ")}

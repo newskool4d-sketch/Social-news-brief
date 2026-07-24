@@ -35,8 +35,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={`${serif.variable} ${sans.variable}`}>
+    <html lang="ko" className={`${serif.variable} ${sans.variable}`} suppressHydrationWarning>
       <body>
+        {/* 저장된 테마를 페인트 전에 적용해 깜빡임 방지 */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light'){document.documentElement.dataset.theme=t;}}catch(e){}",
+          }}
+        />
         <TopBar />
         {children}
         <Analytics />

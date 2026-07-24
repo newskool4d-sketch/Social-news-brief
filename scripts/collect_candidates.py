@@ -236,6 +236,25 @@ def main():
     if errors:
         print("※ 오류가 있었던 축/검색어는 위 stderr 참조 — 조용히 누락시키지 말고 수동 WebSearch로 보강할 것.")
 
+    prune_old_cache(os.path.dirname(out_path), keep=8)
+
+
+def prune_old_cache(cache_dir: str, keep: int = 8):
+    """오래된 candidates-*.json 캐시를 최신 keep개만 남기고 삭제(임시 산출물 누적 방지)."""
+    try:
+        files = sorted(
+            f for f in os.listdir(cache_dir)
+            if f.startswith("candidates-") and f.endswith(".json")
+        )
+    except OSError:
+        return
+    for f in files[:-keep]:
+        try:
+            os.remove(os.path.join(cache_dir, f))
+            print(f"  캐시 정리: {f} 삭제", file=sys.stderr)
+        except OSError:
+            pass
+
 
 if __name__ == "__main__":
     main()

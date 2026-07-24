@@ -2,6 +2,7 @@ import Link from "next/link";
 import { countArticlesBySubject } from "@/lib/subject-archive";
 import { FACE_ORDER } from "@/lib/subjects";
 import { SubjectMenu, type SubjectMenuItem } from "./SubjectMenu";
+import { ThemeToggle } from "./ThemeToggle";
 
 /**
  * 전 페이지 공통 상단 바(sticky). 좌측 제호 축약 링크, 우측 과목 메뉴.
@@ -21,7 +22,10 @@ export async function TopBar() {
         <Link href="/" className="topbar-brand">
           학생을 위한 사회 뉴스 브리핑
         </Link>
-        <SubjectMenu subjects={subjects} />
+        <div className="topbar-actions">
+          <ThemeToggle />
+          <SubjectMenu subjects={subjects} />
+        </div>
       </div>
     </div>
   );

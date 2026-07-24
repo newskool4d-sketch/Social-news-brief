@@ -32,6 +32,35 @@
   }
 }
 
+/* 수동 토글 — data-theme가 OS 설정(미디어쿼리)을 이긴다 */
+:root[data-theme="light"] {
+  --desk: #e9e4d6;
+  --paper: #fbf8f0;
+  --ink: #201d17;
+  --ink-soft: #4a463c;
+  --muted: #7d7666;
+  --hairline: #c9c2af;
+  --rule: #201d17;
+  --stamp: #a33418;
+  --stamp-bg: rgba(163, 52, 24, 0.06);
+  --think-bg: #f3eedf;
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --desk: #14130f;
+  --paper: #201e18;
+  --ink: #e9e3d2;
+  --ink-soft: #c4bda9;
+  --muted: #948c78;
+  --hairline: #4a453a;
+  --rule: #e9e3d2;
+  --stamp: #d97a54;
+  --stamp-bg: rgba(217, 122, 84, 0.1);
+  --think-bg: #29261e;
+  color-scheme: dark;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -97,6 +126,32 @@ a:focus-visible {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+}
+
+.theme-toggle {
+  font-size: 15px;
+  line-height: 1;
+  width: 30px;
+  height: 28px;
+  color: var(--paper);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 3px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .subjmenu {
@@ -243,6 +298,144 @@ a:focus-visible {
   font-size: 10px;
 }
 
+/* ── 수업 활용 안내(/guide) ── */
+.guide-sec {
+  margin-bottom: 30px;
+}
+
+.guide-sec h2 {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  border-bottom: 2px solid var(--rule);
+  padding-bottom: 6px;
+  margin: 0 0 14px;
+}
+
+.guide-sec p {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.guide-flow {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.guide-flow li {
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--ink-soft);
+}
+
+.guide-links {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+.guide-links a {
+  color: var(--stamp);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid var(--hairline);
+}
+
+/* ── 커버리지(/coverage) ── */
+.coverage-intro {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  margin: 0 0 28px;
+}
+
+.coverage-row {
+  display: grid;
+  grid-template-columns: 130px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  margin: 12px 0;
+}
+
+.coverage-label {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.coverage-label a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.coverage-label a:hover {
+  text-decoration: underline;
+}
+
+.coverage-type {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.coverage-bar {
+  height: 14px;
+  background: var(--surface-2, var(--think-bg));
+  border: 1px solid var(--hairline);
+  border-radius: 980px;
+  overflow: hidden;
+}
+
+.coverage-fill {
+  height: 100%;
+  border-radius: 980px;
+  min-width: 2px;
+  transition: width 0.4s ease;
+}
+
+.coverage-num {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.coverage-art {
+  color: var(--muted);
+}
+
+@media (max-width: 720px) {
+  .coverage-row {
+    grid-template-columns: 96px 1fr;
+    grid-template-areas: "label bar" "num num";
+    row-gap: 4px;
+  }
+  .coverage-label {
+    grid-area: label;
+  }
+  .coverage-bar {
+    grid-area: bar;
+  }
+  .coverage-num {
+    grid-area: num;
+    font-size: 12px;
+  }
+}
+
 /* ── 제호 ── */
 .masthead {
   text-align: center;
@@ -381,6 +574,8 @@ h1.mast-title {
   background: var(--ink);
   color: var(--paper);
   padding: 3px 12px 4px 16px;
+  /* 과목 식별용 좌측 액센트 바(미묘) */
+  border-left: 5px solid var(--face-accent, var(--muted));
 }
 
 .face-unit {
