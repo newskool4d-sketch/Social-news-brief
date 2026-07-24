@@ -298,6 +298,26 @@ a:focus-visible {
   font-size: 10px;
 }
 
+/* ── 과목별 모아보기(/subjects) 항목의 출처 호 라벨 ── */
+.subject-item {
+  margin-top: 26px;
+}
+
+.subject-item-issue {
+  display: inline-block;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  margin-bottom: 2px;
+}
+
+.subject-item-issue:hover {
+  color: var(--stamp);
+}
+
 /* ── 수업 활용 안내(/guide) ── */
 .guide-sec {
   margin-bottom: 30px;

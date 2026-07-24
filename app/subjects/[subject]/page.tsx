@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { loadCurriculumRef } from "@/lib/curriculum";
+import { loadCurriculumRef, loadFlatStandards } from "@/lib/curriculum";
 import { findArticlesBySubject } from "@/lib/subject-archive";
-import { formatDateKorean, formatDateFull } from "@/lib/format";
+import { formatDateKorean } from "@/lib/format";
 import { faceLabel } from "@/lib/subject-labels";
 import { toDisplaySubject, memberSubjectKeys } from "@/lib/subjects";
+import { StoryCard } from "@/components/StoryCard";
+import { Colophon } from "@/components/Colophon";
+import { StandardDetailsProvider, type StandardDetail } from "@/components/StandardDetailsProvider";
+import type { ArticleView } from "@/lib/types";
 
 export async function generateStaticParams() {
   const ref = await loadCurriculumRef();
-  // 표시 과목 기준(통합사회1·2 → "통합사회" 한 페이지)
   const displaySubjects = [...new Set(Object.keys(ref.subjects).map(toDisplaySubject))];
   return displaySubjects.map((subject) => ({ subject }));
 }
@@ -25,83 +28,70 @@ export async function generateMetadata({
 
 export default async function SubjectPage({ params }: { params: Promise<{ subject: string }> }) {
   const subject = decodeURIComponent((await params).subject);
-  const ref = await loadCurriculumRef();
-  // 표시 과목 → 구성 데이터 과목의 메타(type)를 대표로 가져온다.
+  const [ref, flat, archived] = await Promise.all([
+    loadCurriculumRef(),
+    loadFlatStandards(),
+    findArticlesBySubject(subject),
+  ]);
+
   const members = memberSubjectKeys(subject);
   const meta = members.map((k) => ref.subjects[k]).find(Boolean);
   if (!meta) notFound();
 
-  const archived = await findArticlesBySubject(subject);
+  // 초기 화면과 동일한 StoryCard를 쓰기 위해 대표 성취기준을 붙이고, 배지 펼침용 전문을 모은다.
+  const standardDetails: Record<string, StandardDetail> = {};
+  const items = archived.map(({ issueDate, article }) => {
+    for (const s of article.standards) {
+      const std = flat.get(s.code);
+      if (std) standardDetails[s.code] = { text: std.text, explain: std.explain };
+    }
+    const primaryCode = article.standards[0]?.code;
+    const view: ArticleView = { ...article, primaryStandard: primaryCode ? flat.get(primaryCode) ?? null : null };
+    return { issueDate, view };
+  });
 
   return (
-    <div className="sheet">
-      <header className="masthead">
-        <div className="mast-row">
-          <div className="mast-side left">과목별 모아보기</div>
-          <h1 className="mast-title" style={{ fontSize: "clamp(28px, 4.5vw, 42px)" }}>
-            <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>
-              {faceLabel(subject)}
-            </Link>
-          </h1>
-          <div className="mast-side right">
-            {subject}
-            <br />
-            {meta.type}
+    <StandardDetailsProvider details={standardDetails}>
+      <div className="sheet">
+        <header className="masthead">
+          <div className="mast-row">
+            <div className="mast-side left">과목별 모아보기</div>
+            <h1 className="mast-title" style={{ fontSize: "clamp(28px, 4.5vw, 42px)" }}>
+              <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>
+                {faceLabel(subject)}
+              </Link>
+            </h1>
+            <div className="mast-side right">
+              {subject}
+              <br />
+              {meta.type}
+            </div>
           </div>
-        </div>
-        <div className="rule-double" />
-      </header>
+          <div className="rule-double" />
+        </header>
 
-      <section className="face">
-        <div className="face-head">
-          <span className="face-label">{faceLabel(subject)}</span>
-          <span className="face-unit">이 과목으로 읽은 기사 {archived.length}건</span>
-        </div>
+        <section className="face">
+          <div className="face-head">
+            <span className="face-label">{faceLabel(subject)}</span>
+            <span className="face-unit">이 과목으로 읽은 기사 {items.length}건</span>
+          </div>
 
-        {archived.length === 0 ? (
-          <p className="issue-empty">아직 이 과목으로 실린 기사가 없습니다.</p>
-        ) : (
-          archived.map(({ issueDate, article }) => (
-            <article className="story" key={article.id} style={{ marginTop: 22 }}>
-              <div className="story-meta">
-                <span className={`scope${article.scope === "국내" ? " dom" : ""}`}>{article.scope}</span>
-                {article.reported ? (
-                  <time className="report-date" dateTime={article.reported}>
-                    {formatDateFull(article.reported)} 보도
-                  </time>
-                ) : null}
-                <Link href={`/issues/${issueDate}`} style={{ color: "var(--muted)" }}>
-                  {formatDateKorean(issueDate)} 호
+          {items.length === 0 ? (
+            <p className="issue-empty">아직 이 과목으로 실린 기사가 없습니다.</p>
+          ) : (
+            items.map(({ issueDate, view }) => (
+              <div className="subject-item" key={view.id}>
+                <Link href={`/issues/${issueDate}`} className="subject-item-issue">
+                  {formatDateKorean(issueDate)} 호에서 →
                 </Link>
+                <StoryCard article={view} />
               </div>
-              <h2 style={{ fontSize: 21 }}>
-                <Link href={`/issues/${issueDate}`} style={{ color: "inherit", textDecoration: "none" }}>
-                  {article.title}
-                </Link>
-              </h2>
-              <p className="lede">{article.lede}</p>
-              {article.think ? (
-                <aside className="think">
-                  <div className="think-label">생각해 보기</div>
-                  <p>{article.think}</p>
-                </aside>
-              ) : null}
-            </article>
-          ))
-        )}
-      </section>
+            ))
+          )}
+        </section>
 
-      <footer className="colophon">
-        <p>
-          <Link href="/" style={{ color: "inherit" }}>
-            최신 호로 돌아가기
-          </Link>{" "}
-          ·{" "}
-          <Link href="/archive" style={{ color: "inherit" }}>
-            지난 호 전체 보기
-          </Link>
-        </p>
-      </footer>
-    </div>
+        <Colophon />
+      </div>
+    </StandardDetailsProvider>
   );
 }
