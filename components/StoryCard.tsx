@@ -5,7 +5,7 @@ import { BodyToggle } from "./BodyToggle";
 
 export function StoryCard({ article, lead = false }: { article: ArticleView; lead?: boolean }) {
   return (
-    <article className={`story${lead ? " lead" : ""}`}>
+    <article className={`story${lead ? " lead" : ""}`} id={article.id}>
       <div className="story-meta">
         <span className={`scope${article.scope === "국내" ? " dom" : ""}`}>{article.scope}</span>
         {article.reported ? (

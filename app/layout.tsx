@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Sans_KR, Noto_Serif_KR } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { TopBar } from "@/components/TopBar";
 import "./globals.css";
 
 const serif = Noto_Serif_KR({
@@ -36,6 +37,7 @@ export default function RootLayout({
   return (
     <html lang="ko" className={`${serif.variable} ${sans.variable}`}>
       <body>
+        <TopBar />
         {children}
         <Analytics />
       </body>

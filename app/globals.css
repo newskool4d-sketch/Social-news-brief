@@ -68,6 +68,181 @@ a:focus-visible {
   box-shadow: 0 2px 24px rgba(0, 0, 0, 0.12);
 }
 
+/* ── 상단 바(sticky) + 과목 메뉴 ── */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.topbar-inner {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 8px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.topbar-brand {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--paper);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.subjmenu {
+  position: relative;
+  flex: none;
+}
+
+.subjmenu-btn {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--paper);
+  border: none;
+  border-radius: 3px;
+  padding: 5px 14px;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+}
+
+.subjmenu-btn:hover {
+  opacity: 0.9;
+}
+
+.subjmenu-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 220px;
+  background: var(--paper);
+  border: 1px solid var(--hairline);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+  border-radius: 6px;
+  padding: 6px;
+  font-family: var(--sans);
+  z-index: 60;
+}
+
+.subjmenu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 12px;
+  font-size: 14px;
+  color: var(--ink);
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.subjmenu-item:hover {
+  background: var(--think-bg);
+}
+
+.subjmenu-item.archive {
+  font-weight: 700;
+}
+
+.subjmenu-count {
+  font-size: 12px;
+  color: var(--paper);
+  background: var(--stamp);
+  border-radius: 980px;
+  min-width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+.subjmenu-sep {
+  height: 1px;
+  background: var(--hairline);
+  margin: 5px 4px;
+}
+
+/* ── 지난 호 아카이브 목록(/archive) ── */
+.archive-issue {
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--hairline);
+  padding-bottom: 22px;
+}
+
+.archive-issue-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  text-decoration: none;
+  color: var(--ink);
+  border-bottom: 2px solid var(--rule);
+  padding-bottom: 6px;
+  margin-bottom: 12px;
+}
+
+.archive-no {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 900;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 2px 10px;
+}
+
+.archive-date {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+.archive-meta {
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--muted);
+  margin-left: auto;
+}
+
+.archive-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.archive-list li {
+  margin: 7px 0;
+}
+
+.archive-list a {
+  font-size: 16px;
+  color: var(--ink-soft);
+  text-decoration: none;
+  line-height: 1.5;
+}
+
+.archive-list a:hover {
+  color: var(--ink);
+  text-decoration: underline;
+}
+
+.archive-list .scope {
+  font-size: 10px;
+}
+
 /* ── 제호 ── */
 .masthead {
   text-align: center;
@@ -502,7 +677,8 @@ h1.mast-title {
 
   .issue-nav,
   .std-detail,
-  .deep-toggle {
+  .deep-toggle,
+  .topbar {
     display: none !important;
   }
 

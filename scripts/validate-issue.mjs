@@ -13,9 +13,9 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
-const MAX_ARTICLES = 8; // 주간 발행 — 과목별 커버리지 확보용 상한
+const MAX_ARTICLES = 9; // 주간 발행 — 9개 면(과목) 전부 커버 가능하도록 (2026-07-24 고도화 2차)
 const MAX_STANDARDS = 3;
-const MAX_PER_FACE = 2; // 같은 과목 면 독식 방지(경고)
+const MAX_PER_FACE = 1; // 과목당 1건 원칙(경고) — "가급적"이므로 차단이 아닌 경고
 
 const errors = [];
 const warnings = [];
@@ -154,7 +154,7 @@ for (const a of articles) {
 }
 for (const [subject, n] of faceCounts) {
   if (n > MAX_PER_FACE) {
-    warnings.push(`'${subject}' 면에 기사 ${n}건 — 한 면 최대 ${MAX_PER_FACE}건 권장(면 독식 방지)`);
+    warnings.push(`'${subject}' 면에 기사 ${n}건 — 과목당 1건 원칙(기사 성격상 불가피하면 허용, 억지 배분은 재검토)`);
   }
 }
 

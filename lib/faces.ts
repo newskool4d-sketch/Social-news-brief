@@ -1,20 +1,5 @@
 import type { Article, ArticleView, Face, FlatStandard, Issue } from "./types";
-
-/**
- * 면(단원) 배치 순서. 통합사회(공통)를 앞세우고 진로·융합선택을 뒤에 둔다.
- * 목록에 없는 과목이 나오면 뒤에 자동 추가한다.
- */
-const FACE_ORDER = [
-  "통합사회1",
-  "통합사회2",
-  "정치",
-  "법과 사회",
-  "경제",
-  "금융과 경제생활",
-  "국제관계의 이해",
-  "사회와 문화",
-  "사회문제 탐구",
-];
+import { FACE_ORDER } from "./subjects";
 
 /**
  * 기사의 대표 성취기준(첫 번째 코드)을 기준으로 면을 자동 배치한다.
@@ -37,9 +22,10 @@ export function buildFaces(issue: Issue, flatStandards: Map<string, FlatStandard
     bySubject.set(key, list);
   }
 
+  const faceOrder = FACE_ORDER as readonly string[];
   const orderedKeys = [
-    ...FACE_ORDER.filter((key) => bySubject.has(key)),
-    ...[...bySubject.keys()].filter((key) => !FACE_ORDER.includes(key)),
+    ...faceOrder.filter((key) => bySubject.has(key)),
+    ...[...bySubject.keys()].filter((key) => !faceOrder.includes(key)),
   ];
 
   return orderedKeys.map((subjectKey) => {

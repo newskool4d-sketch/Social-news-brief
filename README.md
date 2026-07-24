@@ -76,7 +76,7 @@ Google News RSS를 `after:/before:` 날짜 연산자로 조회해 `content/sourc
 node scripts/validate-issue.mjs content/data/YYYY-MM-DD.json
 ```
 
-스키마·성취기준 코드 실존 여부·기사 수 상한(8건)·원문 보도일·출처 화이트리스트·placeholder URL 등을 검사합니다.
+스키마·성취기준 코드 실존 여부·기사 수 상한(9건)·원문 보도일·출처 화이트리스트·placeholder URL 등을 검사합니다.
 빌더는 무효 코드 기사를 조용히 지면에서 제외하므로, push 전 반드시 통과시켜야 합니다.
 
 ## 배포
