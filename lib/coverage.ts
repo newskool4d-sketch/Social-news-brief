@@ -2,9 +2,10 @@ import "server-only";
 import { cache } from "react";
 import { loadAllIssues } from "./data";
 import { loadCurriculumRef } from "./curriculum";
+import { toDisplaySubject } from "./subjects";
 
 export type SubjectCoverage = {
-  subjectKey: string;
+  subjectKey: string; // 표시 과목명(통합사회1·2는 "통합사회"로 합침)
   type: string;
   totalStandards: number;
   coveredStandards: number; // 기사에 한 번이라도 태깅된 성취기준 수(대표+부 모두 집계)
@@ -43,16 +44,27 @@ export const computeCoverage = cache(async (): Promise<{
     }
   }
 
-  const subjects: SubjectCoverage[] = Object.entries(ref.subjects).map(([subjectKey, subject]) => {
+  // 표시 과목으로 합산 — 통합사회1·2는 "통합사회" 한 줄로 묶는다.
+  const grouped = new Map<string, SubjectCoverage>();
+  for (const [subjectKey, subject] of Object.entries(ref.subjects)) {
+    const display = toDisplaySubject(subjectKey);
     const covered = subject.standards.filter((s) => coveredCodes.has(s.code)).length;
-    return {
-      subjectKey,
-      type: subject.type,
-      totalStandards: subject.standards.length,
-      coveredStandards: covered,
-      articleCount: articleCount[subjectKey] ?? 0,
-    };
-  });
+    const existing = grouped.get(display);
+    if (existing) {
+      existing.totalStandards += subject.standards.length;
+      existing.coveredStandards += covered;
+      existing.articleCount += articleCount[subjectKey] ?? 0;
+    } else {
+      grouped.set(display, {
+        subjectKey: display,
+        type: subject.type,
+        totalStandards: subject.standards.length,
+        coveredStandards: covered,
+        articleCount: articleCount[subjectKey] ?? 0,
+      });
+    }
+  }
+  const subjects = [...grouped.values()];
 
   const totalStandards = subjects.reduce((s, x) => s + x.totalStandards, 0);
   const totalCovered = subjects.reduce((s, x) => s + x.coveredStandards, 0);

@@ -1,39 +1,29 @@
-/**
- * 면 머리에 쓰는 짧은 과목 라벨. 정본 과목명(curriculum_ref.json의 key)을
- * 신문 지면 표기로 축약한다. 목록에 없으면 정본 과목명을 그대로 쓴다.
- */
-const FACE_LABELS: Record<string, string> = {
-  통합사회1: "통합사회",
-  통합사회2: "통합사회",
-  정치: "정치",
-  "법과 사회": "법과 사회",
-  경제: "경제",
-  "금융과 경제생활": "경제·금융",
-  "국제관계의 이해": "국제관계",
-  "사회와 문화": "사회·문화",
-  "사회문제 탐구": "사회문제 탐구",
-};
+import { toDisplaySubject } from "./subjects";
 
+/**
+ * 면 머리·메뉴·아카이브에 쓰는 과목 라벨 = 2022 개정 사회과 정식 과목명.
+ * 데이터 key(통합사회1·2 등)를 표시 과목으로 바꾼 값이 곧 정식 과목명이다.
+ * (과거의 "경제·금융"·"국제관계"·"사회·문화" 같은 축약은 폐기 — 정식명 사용)
+ */
 export function faceLabel(subjectKey: string): string {
-  return FACE_LABELS[subjectKey] ?? subjectKey;
+  return toDisplaySubject(subjectKey);
 }
 
 /**
  * 면(과목) 식별용 미묘한 액센트 색. 신문 톤을 해치지 않도록 채도를 낮춘 잉크 계열.
- * 면 머리 좌측의 얇은 색 바에만 쓴다(라이트·다크 공통으로 무난한 중간 채도).
+ * 표시 과목(통합사회1·2는 "통합사회") 기준으로 색을 정한다.
  */
 const FACE_ACCENTS: Record<string, string> = {
-  통합사회1: "#7a8c5a", // 올리브(자연·환경)
-  통합사회2: "#7a8c5a",
-  정치: "#9c6b4a", // 벽돌(권력·제도)
-  "법과 사회": "#5f7a8c", // 청회(법·질서)
-  경제: "#a3833a", // 황토(시장·화폐)
+  통합사회: "#7a8c5a", // 올리브
+  정치: "#9c6b4a", // 벽돌
+  "법과 사회": "#5f7a8c", // 청회
+  경제: "#a3833a", // 황토
   "금융과 경제생활": "#a3833a",
-  "국제관계의 이해": "#6a6f9c", // 남보라(국제)
-  "사회와 문화": "#8c5f7a", // 자주(문화)
-  "사회문제 탐구": "#5f8c7a", // 청록(탐구)
+  "국제관계의 이해": "#6a6f9c", // 남보라
+  "사회와 문화": "#8c5f7a", // 자주
+  "사회문제 탐구": "#5f8c7a", // 청록
 };
 
 export function faceAccent(subjectKey: string): string {
-  return FACE_ACCENTS[subjectKey] ?? "var(--muted)";
+  return FACE_ACCENTS[toDisplaySubject(subjectKey)] ?? "var(--muted)";
 }

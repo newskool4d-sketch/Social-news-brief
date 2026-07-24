@@ -1,5 +1,5 @@
 import type { Article, ArticleView, Face, FlatStandard, Issue } from "./types";
-import { FACE_ORDER } from "./subjects";
+import { FACE_ORDER, toDisplaySubject } from "./subjects";
 
 /**
  * 기사의 대표 성취기준(첫 번째 코드)을 기준으로 면을 자동 배치한다.
@@ -14,9 +14,10 @@ export function buildFaces(issue: Issue, flatStandards: Map<string, FlatStandard
     })
     .filter((article): article is ArticleView & { primaryStandard: FlatStandard } => article.primaryStandard !== null);
 
+  // 표시 과목 기준으로 묶는다 — 통합사회1·2는 하나의 "통합사회" 면으로 합쳐진다.
   const bySubject = new Map<string, ArticleView[]>();
   for (const article of withPrimary) {
-    const key = article.primaryStandard!.subjectKey;
+    const key = toDisplaySubject(article.primaryStandard!.subjectKey);
     const list = bySubject.get(key) ?? [];
     list.push(article);
     bySubject.set(key, list);

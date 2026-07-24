@@ -39,7 +39,7 @@ export default async function StandardPage({ params }: { params: Promise<{ code:
             </Link>
           </h1>
           <div className="mast-side right">
-            {standard.subjectKey} ({standard.subjectType})
+            {faceLabel(standard.subjectKey)} ({standard.subjectType})
             <br />
             {standard.unitName}
           </div>
@@ -51,7 +51,7 @@ export default async function StandardPage({ params }: { params: Promise<{ code:
         <div className="face-head">
           <span className="face-label">{faceLabel(standard.subjectKey)}</span>
           <span className="face-unit">
-            {standard.subjectKey} · {standard.unitName}
+            {faceLabel(standard.subjectKey)} · {standard.unitName}
           </span>
         </div>
 

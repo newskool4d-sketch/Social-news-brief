@@ -5,10 +5,13 @@ import { loadCurriculumRef } from "@/lib/curriculum";
 import { findArticlesBySubject } from "@/lib/subject-archive";
 import { formatDateKorean, formatDateFull } from "@/lib/format";
 import { faceLabel } from "@/lib/subject-labels";
+import { toDisplaySubject, memberSubjectKeys } from "@/lib/subjects";
 
 export async function generateStaticParams() {
   const ref = await loadCurriculumRef();
-  return Object.keys(ref.subjects).map((subject) => ({ subject }));
+  // 표시 과목 기준(통합사회1·2 → "통합사회" 한 페이지)
+  const displaySubjects = [...new Set(Object.keys(ref.subjects).map(toDisplaySubject))];
+  return displaySubjects.map((subject) => ({ subject }));
 }
 
 export async function generateMetadata({
@@ -23,7 +26,9 @@ export async function generateMetadata({
 export default async function SubjectPage({ params }: { params: Promise<{ subject: string }> }) {
   const subject = decodeURIComponent((await params).subject);
   const ref = await loadCurriculumRef();
-  const meta = ref.subjects[subject];
+  // 표시 과목 → 구성 데이터 과목의 메타(type)를 대표로 가져온다.
+  const members = memberSubjectKeys(subject);
+  const meta = members.map((k) => ref.subjects[k]).find(Boolean);
   if (!meta) notFound();
 
   const archived = await findArticlesBySubject(subject);
