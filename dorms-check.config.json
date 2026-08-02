@@ -1,0 +1,15 @@
+{
+  "app": {
+    "name": "학생을 위한 사회 뉴스 브리핑",
+    "url": "https://social-news-brief.vercel.app",
+    "stack": "nextjs"
+  },
+  "tracks": [
+    "security"
+  ],
+  "edzipCase": null,
+  "teacher": {
+    "dormsHandle": ""
+  },
+  "ownershipConfirmed": true
+}

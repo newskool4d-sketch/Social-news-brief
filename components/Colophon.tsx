@@ -14,7 +14,7 @@ export function Colophon() {
       </p>
       <p className="colophon-nav">
         <Link href="/guide">수업 활용 안내</Link> · <Link href="/archive">지난 호 전체</Link> ·{" "}
-        <Link href="/coverage">성취기준 커버리지</Link>
+        <Link href="/coverage">성취기준 커버리지</Link> · <Link href="/privacy">개인정보처리방침</Link>
       </p>
     </footer>
   );

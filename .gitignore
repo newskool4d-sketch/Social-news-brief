@@ -45,3 +45,6 @@ next-env.d.ts
 
 # Python 캐시(수집 스크립트 import 시 생성)
 __pycache__/
+
+# dorms-check 스캔 산출물(리포트·앱 URL 포함, 발행물 아님)
+/.dorms-check/
