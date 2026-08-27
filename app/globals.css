@@ -76,6 +76,9 @@ body {
   font-family: var(--serif);
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 a {
@@ -126,6 +129,8 @@ a:focus-visible {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .topbar-actions {
@@ -958,5 +963,32 @@ h1.mast-title {
     margin-right: 0;
     border-bottom: 1px solid var(--hairline);
     padding-bottom: 24px;
+  }
+
+  /* 호수 내비게이션 — 좁은 화면에서 3열이 밀리지 않도록 현재 호를 위로, 이전/다음 버튼을 아래로 */
+  .issue-nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 10px;
+  }
+
+  .issue-now {
+    order: -1;
+    flex-basis: 100%;
+    text-align: center;
+  }
+
+  .nav-btn {
+    padding: 7px 14px;
+  }
+
+  /* 상단 바 터치 영역 확보 */
+  .theme-toggle {
+    width: 34px;
+    height: 32px;
+  }
+
+  .subjmenu-btn {
+    padding: 7px 14px;
   }
 }
